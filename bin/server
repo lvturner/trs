@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+"use strict";
+console.log("Creating new app instance");
+
+const config = require('../config.json');
+const Filter = require('../managers/filter.js');
+const ClientListener = require('../managers/client_listener');
+const Router = require('../managers/router');
+
+let router = new Router();
+let filter = new Filter(config, router);
+let clientListener = new ClientListener(config, router);
+
+filter.connect();
+clientListener.listen();
+
+

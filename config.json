@@ -1,0 +1,8 @@
+{
+  "tiingo_api_key": "your_api_key_here",
+  "tiingo_ws_urls" : {
+    "iex": "wss://api.tiingo.com/iex",
+    "test": "wss://api.tiingo.com/test"
+  },
+  "client_port": 1337
+}
