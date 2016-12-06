@@ -1,4 +1,4 @@
-class Filter {
+class TiingoDataService {
   constructor(config, router) {
     this._url = config.tiingo_ws_urls.iex;
     this._apiKey = config.tiingo_api_key;
@@ -6,7 +6,7 @@ class Filter {
   }
 
   connect() {
-    console.log("Connecting filter service");
+    console.log("Connecting Tiingo (IEX) data service");
     const WebSocket = require('ws');
     this._ws = new WebSocket(this._url);
     this._ws.on('open', this.wsOpen.bind(this));
@@ -35,7 +35,7 @@ class Filter {
     }
 
     if(response.messageType === "H") {
-      process.stdout.write("❤️");
+      process.stdout.write("❤️ ");
     }
 
     if(response.messageType === "I") {
@@ -45,4 +45,4 @@ class Filter {
 
 }
 
-module.exports = Filter;
+module.exports = TiingoDataService;
