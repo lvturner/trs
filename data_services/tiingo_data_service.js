@@ -34,7 +34,7 @@ class TiingoDataService {
     }
 
     if(response.messageType === "H") {
-      process.stdout.write("❤️ ");
+      // process.stdout.write("❤️ ");
     }
 
     if(response.messageType === "I") {
