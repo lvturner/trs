@@ -24,8 +24,11 @@ class Router {
       this.tickerList.push(ticker);
       this.tickerEvents[ticker] = new EventEmitter();
       this.tickerEvents[ticker].setMaxListeners(0);
-      console.log("Now listening to " + this.tickerList.length + " tickers!");
     }
+  }
+
+  getTickerCount() {
+    return this.tickerList.length;
   }
 }
 

@@ -27,6 +27,10 @@ class ClientListener {
 
     aggregator.start();
   }
+
+  getConnectedClients() {
+    return 0;
+  }
 }
 
 module.exports = ClientListener;

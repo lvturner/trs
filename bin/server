@@ -1,27 +1,65 @@
 #!/usr/bin/env node
 "use strict";
-console.log("Creating new app instance");
-
 const fs = require('fs');
 const path = require('path');
 const basename = path.basename(module.filename);
 
 const config = require('../config.json');
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 const ClientListener = require('../managers/client_listener');
 const Router = require('../managers/router');
 const SERVICES_DIR = "/../data_services/";
 
+
+readline.cursorTo(process.stdout, 0, 0);
+readline.clearScreenDown(process.stdout);
+
+printHeader();
+
 let router = new Router();
 fs.readdirSync(__dirname + SERVICES_DIR).filter(function (file) {
     return (file.indexOf(".") !== 0) && (file !== basename);
 }).forEach(function (file) {
-   var stats = fs.statSync(__dirname + SERVICES_DIR + file);
    let DataService = require(__dirname + SERVICES_DIR + file);
    let dataService = new DataService(config, router);
+
    dataService.connect();
 });
 
 let clientListener = new ClientListener(config, router);
 
 clientListener.listen();
+
+printStatus();
+
+setInterval(() => {
+  printStatus();
+}, 1000);
+
+function printHeader() {
+  rl.write(fs.readFileSync(__dirname + "/../trs.nfo"));
+}
+
+function printStatus() {
+  readline.cursorTo(process.stdout, 0, 12);
+  readline.clearScreenDown(process.stdout);
+  rl.write("\r\n");
+  rl.write("Listening to " + router.getTickerCount() + " tickers and servicing " + clientListener.getConnectedClients() + " clients\n");
+  rl.write("Uptime: " + printUptime() + "\n");
+}
+
+function printUptime() {
+  let totalSeconds = process.uptime();
+  let seconds = Math.round(totalSeconds % 60);
+  let minutes = Math.floor(totalSeconds / 60);
+  let hours = Math.floor(minutes / 60);
+  minutes = Math.floor(minutes % 60);
+
+  return hours + "h " + minutes + "m " +  seconds + "s";
+}

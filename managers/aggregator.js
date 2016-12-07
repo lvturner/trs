@@ -44,7 +44,7 @@ class Aggregator {
     try {
       this._ws.send(JSON.stringify(data));
     } catch(error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -56,7 +56,6 @@ class Aggregator {
     }
 
     this._tickers = null;
-    console.log("mort. to die.");
   }
 }
 

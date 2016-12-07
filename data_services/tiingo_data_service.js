@@ -21,7 +21,6 @@ class TiingoDataService {
     };
 
     this._ws.send(JSON.stringify(subs));
-    console.log("Subscription sent to tingo");
   }
 
   wsMessage(data, flags) {
@@ -39,10 +38,9 @@ class TiingoDataService {
     }
 
     if(response.messageType === "I") {
-      console.log(data);
+      // console.log(data);
     }
   }
-
 }
 
 module.exports = TiingoDataService;
