@@ -31,7 +31,7 @@ fs.readdirSync(__dirname + SERVICES_DIR).filter(function (file) {
    let DataService = require(__dirname + SERVICES_DIR + file);
    let dataService = new DataService(config, router);
 
-   // dataService.connect();
+   dataService.connect();
 });
 
 let clientListener = new ClientListener(config, router);
