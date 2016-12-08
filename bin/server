@@ -2,6 +2,8 @@
 "use strict";
 const fs = require('fs');
 const path = require('path');
+
+const header = fs.readFileSync(__dirname + "/../trs.nfo");
 const basename = path.basename(module.filename);
 
 const config = require('../config.json');
@@ -29,7 +31,7 @@ fs.readdirSync(__dirname + SERVICES_DIR).filter(function (file) {
    let DataService = require(__dirname + SERVICES_DIR + file);
    let dataService = new DataService(config, router);
 
-   dataService.connect();
+   // dataService.connect();
 });
 
 let clientListener = new ClientListener(config, router);
@@ -43,23 +45,27 @@ setInterval(() => {
 }, 1000);
 
 function printHeader() {
-  rl.write(fs.readFileSync(__dirname + "/../trs.nfo"));
+  rl.write(header);
 }
 
 function printStatus() {
-  readline.cursorTo(process.stdout, 0, 12);
+  // NOTE could optimise this to not redraw entire screen, but currently not worth it
+  readline.cursorTo(process.stdout, 0, 0);
   readline.clearScreenDown(process.stdout);
+  printHeader();
   rl.write("\r\n");
   rl.write("Listening to " + router.getTickerCount() + " tickers and servicing " + clientListener.getConnectedClients() + " clients\n");
-  rl.write("Uptime: " + printUptime() + "\n");
+  rl.write("Uptime: " + printUptime(process.uptime()) + "\n");
 }
 
-function printUptime() {
-  let totalSeconds = process.uptime();
-  let seconds = Math.round(totalSeconds % 60);
+function printUptime(timeInSecs) {
+  let totalSeconds = timeInSecs;
+  let seconds = Math.floor(totalSeconds % 60);
   let minutes = Math.floor(totalSeconds / 60);
   let hours = Math.floor(minutes / 60);
   minutes = Math.floor(minutes % 60);
+  let days = Math.floor(hours / 24);
+  hours = Math.floor(hours % 24);
 
-  return hours + "h " + minutes + "m " +  seconds + "s";
+  return days + "d " + hours + "h " + minutes + "m " +  seconds + "s";
 }
