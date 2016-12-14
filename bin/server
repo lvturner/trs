@@ -41,7 +41,7 @@ clientListener.listen();
 printStatus();
 
 setInterval(() => {
-  printStatus();
+  // printStatus();
 }, 1000);
 
 function printHeader() {

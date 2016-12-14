@@ -11,6 +11,17 @@ class TiingoDataService {
     this._ws = new WebSocket(this._url);
     this._ws.on('open', this.wsOpen.bind(this));
     this._ws.on('message', this.wsMessage.bind(this));
+    this._ws.on('close', this.wsClose.bind(this));
+    this._ws.on('error', this.wsError.bind(this));
+  }
+
+  wsClose() {
+    // TODO come up with some sort of smarter reconnection strategy!
+    throw new Error("Disconnected!");
+  }
+
+  wsError(error) {
+    throw new Error(error);
   }
 
   wsOpen() {
@@ -21,8 +32,11 @@ class TiingoDataService {
     };
 
     this._ws.send(JSON.stringify(subs));
-  }
 
+    setInterval(() => {
+      this._ws.ping();
+    }, 1000);
+  }
   wsMessage(data, flags) {
     let response = JSON.parse(data);
     if(response.messageType === "A") {
