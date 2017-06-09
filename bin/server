@@ -19,11 +19,6 @@ const Router = require('../managers/router');
 const SERVICES_DIR = "/../data_services/";
 
 
-readline.cursorTo(process.stdout, 0, 0);
-readline.clearScreenDown(process.stdout);
-
-printHeader();
-
 let router = new Router();
 fs.readdirSync(__dirname + SERVICES_DIR).filter(function (file) {
     return (file.indexOf(".") !== 0) && (file !== basename);
@@ -37,35 +32,3 @@ fs.readdirSync(__dirname + SERVICES_DIR).filter(function (file) {
 let clientListener = new ClientListener(config, router);
 
 clientListener.listen();
-
-printStatus();
-
-setInterval(() => {
-  // printStatus();
-}, 1000);
-
-function printHeader() {
-  rl.write(header);
-}
-
-function printStatus() {
-  // NOTE could optimise this to not redraw entire screen, but currently not worth it
-  readline.cursorTo(process.stdout, 0, 0);
-  readline.clearScreenDown(process.stdout);
-  printHeader();
-  rl.write("\r\n");
-  rl.write("Listening to " + router.getTickerCount() + " tickers and servicing " + clientListener.getConnectedClients() + " clients\n");
-  rl.write("Uptime: " + printUptime(process.uptime()) + "\n");
-}
-
-function printUptime(timeInSecs) {
-  let totalSeconds = timeInSecs;
-  let seconds = Math.floor(totalSeconds % 60);
-  let minutes = Math.floor(totalSeconds / 60);
-  let hours = Math.floor(minutes / 60);
-  minutes = Math.floor(minutes % 60);
-  let days = Math.floor(hours / 24);
-  hours = Math.floor(hours % 24);
-
-  return days + "d " + hours + "h " + minutes + "m " +  seconds + "s";
-}
