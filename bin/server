@@ -3,7 +3,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const header = fs.readFileSync(__dirname + "/../trs.nfo");
 const basename = path.basename(module.filename);
 
 const config = require('../config.json');
