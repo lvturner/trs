@@ -19,7 +19,14 @@ class Aggregator {
       case "U":
         this.unsubscribe(message.ticker.toLowerCase());
         break;
+      case "F":
+        this.firehose();
+        break;
     }
+  }
+
+  firehose() {
+    this._router.firehose.on('tick', this._boundHandler);
   }
 
   subscribe(ticker) {

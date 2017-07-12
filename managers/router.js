@@ -1,7 +1,11 @@
+const EventEmitter = require('events').EventEmitter;
+
 class Router {
   constructor() {
     this.tickerList = [];
     this.tickerEvents = {};
+    this.firehose = new EventEmitter();
+    this.firehose.setMaxListeners(0);
   }
 
   get tickers() {
@@ -14,12 +18,12 @@ class Router {
     this.checkTickerHandler(ticker);
 
     this.tickerEvents[ticker].emit('tick', message);
+    this.firehose.emit('tick', message);
   }
 
   checkTickerHandler(ticker) {
     if (!this.tickerList.includes(ticker)) {
       // send event to subscribers of this ticker
-      const EventEmitter = require('events').EventEmitter;
 
       this.tickerList.push(ticker);
       this.tickerEvents[ticker] = new EventEmitter();
