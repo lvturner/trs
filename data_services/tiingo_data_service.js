@@ -37,6 +37,7 @@ class TiingoDataService {
       this._ws.ping();
     }, 1000);
   }
+
   wsMessage(data, flags) {
     let response = JSON.parse(data);
     if(response.messageType === "A") {
