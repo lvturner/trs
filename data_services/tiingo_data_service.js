@@ -28,7 +28,7 @@ class TiingoDataService {
     let subs = {
       'eventName': 'subscribe',
       'authorization': this._apiKey,
-      'eventData': {}
+      'eventData': { thresholdLevel: 0}
     };
 
     this._ws.send(JSON.stringify(subs));
