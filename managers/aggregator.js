@@ -51,11 +51,13 @@ class Aggregator {
     try {
       this._ws.send(JSON.stringify(data));
     } catch(error) {
-      throw new Error(error);
+      // console.log(error);
+      this._ws.terminate();
     }
   }
 
   close() {
+    console.log("Client disconnected");
     // connection closed
     for(let x  = 0; x < this._tickers.length; x++) {
       let ticker = this._tickers[x];
